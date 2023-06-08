@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:visibility="visible"
+    tools:context=".controlers.SetActivity">
+
+    <Button
+        android:id="@+id/btnPlayer1"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:backgroundTint="#0066FE"
+        android:enabled="false"
+        android:text="W"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvActualizar" />
+
+    <ImageView
+        android:id="@+id/setStage"
+        android:layout_width="400dp"
+        android:layout_height="215dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.545"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.12"
+        app:srcCompat="@drawable/training" />
+
+    <View
+        android:id="@+id/vJP2"
+        android:layout_width="98dp"
+        android:layout_height="139dp"
+        app:layout_constraintBottom_toBottomOf="@+id/setStage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pbPlayer1"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tvSetJP2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#70FFFFFF"
+        android:text="TextView"
+        android:textColor="#FE0000"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/imgsetCharJP2"
+        app:layout_constraintEnd_toEndOf="@+id/vJP2"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintStart_toStartOf="@+id/vJP2"
+        app:layout_constraintTop_toTopOf="@+id/vJP2"
+        app:layout_constraintVertical_bias="0.87" />
+
+    <Spinner
+        android:id="@+id/spIcon"
+        android:layout_width="90dp"
+        android:layout_height="55dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.36"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setStage"
+        app:layout_constraintVertical_bias="0.9" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.53" />
+
+    <ImageView
+        android:id="@+id/imgsetCharJP2"
+        android:layout_width="44dp"
+        android:layout_height="45dp"
+        android:alpha="0.82"
+        app:layout_constraintBottom_toBottomOf="@+id/vJP2"
+        app:layout_constraintEnd_toEndOf="@+id/vJP2"
+        app:layout_constraintHorizontal_bias="0.55"
+        app:layout_constraintStart_toStartOf="@+id/vJP2"
+        app:layout_constraintTop_toTopOf="@+id/vJP2"
+        app:layout_constraintVertical_bias="0.58"
+        app:srcCompat="@drawable/chrrandom" />
+
+    <TextView
+        android:id="@+id/tvRnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Post Bracket | Set n de 3"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="26sp"
+        app:layout_constraintBottom_toTopOf="@+id/setStage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgsetPlayer2"
+        android:layout_width="69dp"
+        android:layout_height="69dp"
+        android:rotationY="-180"
+        android:scaleX="1.42"
+        android:scaleY="1.42"
+        app:layout_constraintBottom_toBottomOf="@+id/vJP2"
+        app:layout_constraintEnd_toEndOf="@+id/vJP2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/vJP2"
+        app:layout_constraintTop_toTopOf="@+id/vJP2"
+        app:layout_constraintVertical_bias="0.85"
+        app:srcCompat="@drawable/chraldeano" />
+
+    <TextView
+        android:id="@+id/tvActualizar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.62" />
+
+    <Button
+        android:id="@+id/btnSelectChr"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:enabled="false"
+        app:icon="@drawable/seleccione"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.32"
+        app:layout_constraintStart_toEndOf="@+id/spIcon"
+        app:layout_constraintTop_toBottomOf="@+id/setStage"
+        app:layout_constraintVertical_bias="0.95" />
+
+    <TextView
+        android:id="@+id/ttlChr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Elige tu personaje"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/spIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setStage"
+        app:layout_constraintVertical_bias="0.8" />
+
+    <Button
+        android:id="@+id/btnSelectScene"
+        android:layout_width="66dp"
+        android:layout_height="63dp"
+        android:visibility="invisible"
+        app:icon="@drawable/seleccione"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.32999998" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="139dp"
+        android:layout_height="16dp"
+        android:background="#2FFF00"
+        app:layout_constraintBottom_toBottomOf="@+id/pbPlayer1"
+        app:layout_constraintEnd_toEndOf="@+id/pbPlayer1"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/pbPlayer1"
+        app:layout_constraintTop_toTopOf="@+id/pbPlayer1"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/view5"
+        android:layout_width="142dp"
+        android:layout_height="16dp"
+        android:background="#2FFE00"
+        app:layout_constraintBottom_toBottomOf="@+id/pbPlayer2"
+        app:layout_constraintEnd_toEndOf="@+id/pbPlayer2"
+        app:layout_constraintStart_toStartOf="@+id/pbPlayer2"
+        app:layout_constraintTop_toTopOf="@+id/pbPlayer2" />
+
+    <TextView
+        android:id="@+id/ttlScene"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Elige el escenario"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btnSelectScene"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.72" />
+
+    <ProgressBar
+        android:id="@+id/progressSet"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvActualizar"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.63" />
+
+    <ProgressBar
+        android:id="@+id/pbPlayer1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="140dp"
+        android:layout_height="17dp"
+        android:max="100"
+        android:progress="100"
+        android:progressTint="#0066FF"
+        android:scaleY="3"
+        app:layout_constraintBottom_toBottomOf="@+id/setStage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.12"
+        app:layout_constraintStart_toStartOf="@+id/setStage"
+        app:layout_constraintTop_toTopOf="@+id/setStage"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ProgressBar
+        android:id="@+id/pbPlayer2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="140dp"
+        android:layout_height="17dp"
+        android:max="100"
+        android:progress="100"
+        android:progressTint="#FF0000"
+        android:rotationY="180"
+        android:scaleY="3"
+        app:layout_constraintBottom_toBottomOf="@+id/setStage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.88"
+        app:layout_constraintStart_toStartOf="@+id/setStage"
+        app:layout_constraintTop_toTopOf="@+id/setStage"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/vJP1"
+        android:layout_width="98dp"
+        android:layout_height="139dp"
+        app:layout_constraintBottom_toBottomOf="@+id/setStage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.252"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pbPlayer1"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imgsetCharJP1"
+        android:layout_width="44dp"
+        android:layout_height="45dp"
+        android:alpha="0.82"
+        app:layout_constraintBottom_toBottomOf="@+id/vJP1"
+        app:layout_constraintEnd_toEndOf="@+id/vJP1"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="@+id/vJP1"
+        app:layout_constraintTop_toTopOf="@+id/vJP1"
+        app:layout_constraintVertical_bias="0.60"
+        app:srcCompat="@drawable/chrrandom" />
+
+    <ImageView
+        android:id="@+id/imgsetPlayer1"
+        android:layout_width="69dp"
+        android:layout_height="69dp"
+        android:scaleX="1.22"
+        android:scaleY="1.22"
+        app:layout_constraintBottom_toBottomOf="@+id/vJP1"
+        app:layout_constraintEnd_toEndOf="@+id/vJP1"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/vJP1"
+        app:layout_constraintTop_toTopOf="@+id/vJP1"
+        app:layout_constraintVertical_bias="0.88"
+        app:srcCompat="@drawable/chrbayonetta" />
+
+    <TextView
+        android:id="@+id/tvSetJP1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#70FFFFFF"
+        android:text="TextView"
+        android:textColor="#0066FE"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/imgsetCharJP1"
+        app:layout_constraintEnd_toEndOf="@+id/vJP1"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="@+id/vJP1"
+        app:layout_constraintTop_toTopOf="@+id/vJP1"
+        app:layout_constraintVertical_bias="0.87" />
+
+    <TextView
+        android:id="@+id/tvPointsJP1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="#0066FE"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/setStage"
+        app:layout_constraintEnd_toStartOf="@+id/vJP1"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/setStage"
+        app:layout_constraintTop_toBottomOf="@+id/pbPlayer1"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tvPointJP2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="#FF0000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/setStage"
+        app:layout_constraintEnd_toEndOf="@+id/setStage"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/vJP2"
+        app:layout_constraintTop_toBottomOf="@+id/pbPlayer2"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/btnPlayer2"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:backgroundTint="#FE0000"
+        android:enabled="false"
+        android:text="W"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.822"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvActualizar" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

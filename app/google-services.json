@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1017492595855",
+    "project_id": "smash-ecef3",
+    "storage_bucket": "smash-ecef3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1017492595855:android:bf37638da0bba3d5d0bcfa",
+        "android_client_info": {
+          "package_name": "com.example.proyectofinaldam1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1017492595855-ajge5bofmi36m21kmelde9p7vn10u63h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAgGlKo5iHqSQx3RiSpsR30wJmECRLqfs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1017492595855-ajge5bofmi36m21kmelde9p7vn10u63h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

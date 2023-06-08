@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:targetApi="27">
+        <activity
+            android:name=".controlers.SetListRowActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controlers.SetListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controlers.SelectStageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controlers.SetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controlers.TournamentCreateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controlers.TournamentListRowActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controlers.TournamentListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controlers.TournamentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controlers.UserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controlers.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controlers.RankingListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controlers.RankingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controlers.LoggingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controlers.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+    </application>
+
+</manifest>
