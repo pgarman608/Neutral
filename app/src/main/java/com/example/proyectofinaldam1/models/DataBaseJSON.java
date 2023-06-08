@@ -108,20 +108,21 @@ public class DataBaseJSON {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
-                    int points = 0;
+                    Usuario usr = null;
                     for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                         HashMap<String, Object> childData = (HashMap<String, Object>) userSnapshot.getValue();
                         Gson gson = new Gson();
                         String json = gson.toJson(childData);
                         Usuario usuario = gson.fromJson(json, Usuario.class);
-                        callback.onUsuarioObtenido(usuario);
+                        if (usuario.getUid().equals(uid)){
+                            usr = usuario;
+                        }
                     }
+                    callback.onUsuarioObtenido(usr);
                 }
             }
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("firebase", "Error getting data", error.toException());
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 
@@ -213,7 +214,7 @@ public class DataBaseJSON {
     public static int setUsuario(Usuario user){
         solucion = 0;
         try{
-            dbFirebase.getReference("Usuarios")
+            dbFirebase.getReference("usuarios")
                     .child(""+user.getUid())
                     .setValue(user)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -243,17 +244,28 @@ public class DataBaseJSON {
     public static class GetSetsTask extends AsyncTask<Integer, Void, List<Set>> {
         private SetCallback callback;
         private String uidTrn;
+        private List<Torneo> torneos;
         /**
-         * Crea una instancia de GetSetsTask.
+         * Crea una instancia de GetSetsTask. para recoger un set de un torneo
          *
          * @param uidTrn   Identificador del torneo al que pertenecen los conjuntos a obtener.
          * @param callback Referencia al objeto SetCallback para manejar el resultado obtenido.
          */
-        public GetSetsTask(String uidTrn, Context content, SetCallback callback) {
+        public GetSetsTask(String uidTrn, SetCallback callback) {
             this.callback = callback;
             this.uidTrn = uidTrn;
+            this.torneos = null;
         }
 
+        /**
+         * Crea una instancia de GetSetsTask. para recoger un set de varios torneos
+         * @param torneos
+         * @param callback
+         */
+        public GetSetsTask(List<Torneo> torneos,SetCallback callback) {
+            this.callback = callback;
+            this.torneos = torneos;
+        }
         /**
          * Realiza la operación en segundo plano para obtener conjuntos de la base de datos Firebase Realtime Database.
          *
@@ -273,8 +285,17 @@ public class DataBaseJSON {
                         Gson gson = new Gson();
                         String json = gson.toJson(childData);
                         Set set = gson.fromJson(json, Set.class);
-                        if (uidTrn.equals(""+set.getUidTrns())){
-                            sets.add(set);
+                        if (torneos == null){
+                            if (uidTrn.equals(""+set.getUidTrns())){
+                                sets.add(set);
+                            }
+                        }else{
+                            Log.e("tres", "onComplete: asdsd" + torneos.get(0).getUid() + " 11 " + set.getUid());
+                            for (int i = 0; i < torneos.size(); i++) {
+                                if (torneos.get(i).getUid() == set.getUidTrns()){
+                                    sets.add(set);
+                                }
+                            }
                         }
                     }
                     callback.onGetSets(sets);
@@ -298,14 +319,26 @@ public class DataBaseJSON {
      */
     public static class GetTrnsTask extends AsyncTask<Integer, Void, List<Torneo>> {
         private UsuarioCallback callback;
+        private String usrUID;
         /**
          * Crea una instancia de GetTrnsTask.
          *
          * @param callback Referencia al objeto UsuarioCallback para manejar el resultado obtenido.
          */
-        public GetTrnsTask( Context content, UsuarioCallback callback) {
+        public GetTrnsTask( UsuarioCallback callback) {
             this.callback = callback;
+            this.usrUID = null;
         }
+        /**
+         * Crea una instancia de GetTrnsTask para recoger los torneos de un usuario
+         *
+         * @param callback Referencia al objeto UsuarioCallback para manejar el resultado obtenido.
+         */
+        public GetTrnsTask(String uid, UsuarioCallback callback) {
+            this.callback = callback;
+            this.usrUID = uid;
+        }
+
         /**
          * Realiza la operación en segundo plano para obtener torneos de la base de datos Firebase Realtime Database.
          *
@@ -325,8 +358,14 @@ public class DataBaseJSON {
                         Gson gson = new Gson();
                         String json = gson.toJson(childData);
                         Torneo trn = gson.fromJson(json, Torneo.class);
-                        Log.e("error torneo", "onComplete: "+ trn);
-                        torneos.add(trn);
+                        if (usrUID == null){
+                            torneos.add(trn);
+                        }else{
+                            if (trn.getUsersList().contains(usrUID)){
+                                torneos.add(trn);
+                            }
+                        }
+
                     }
                     callback.onTrnsObtenido(torneos);
                 }
@@ -390,16 +429,17 @@ public class DataBaseJSON {
                                 Gson gson = new Gson();
                                 String json = gson.toJson(childData);
                                 Usuario usuario = gson.fromJson(json, Usuario.class);
-
                                 if (tier == -2){
                                     if (usrs != null){
                                         for (int i = 0; i < usrs.size(); i++) {
                                             if (usuario.getUid().equals(usrs.get(i))){
+                                                Log.e("TAG1", "onComplete: sasf" );
                                                 users.add(usuario);
                                             }
                                         }
                                     }
                                 }else{
+                                    Log.e("TAG2", "onComplete: hjhjhj" );
                                     if (tier == -1){
                                         users.add(usuario);
                                     }else{
@@ -418,7 +458,7 @@ public class DataBaseJSON {
         /**
          *
          * @param usuarios The result, if any, computed in
-         *               {@link #doInBackground(Object[])}, can be null
+         *               {@link (Object[])}, can be null
          *
          */
         @Override

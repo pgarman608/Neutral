@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.proyectofinaldam1.R;
 import com.example.proyectofinaldam1.adapters.RaRanking;
@@ -62,7 +63,7 @@ public class TournamentListActivity extends AppCompatActivity implements DataBas
         // Verificar si el usuario actual está registrado
         if (DataBaseJSON.userFirebase == null){
             // El usuario no está registrado, deshabilitar el botón de creación de torneos
-            btnCreateTrn.setEnabled(false);
+            btnCreateTrn.setVisibility(View.INVISIBLE);
         }
         // Establecer el evento de click del botón de creación de torneos
         btnCreateTrn.setOnClickListener(new View.OnClickListener() {
@@ -87,31 +88,34 @@ public class TournamentListActivity extends AppCompatActivity implements DataBas
                     intentToTrn.putExtra("activity_anterior",strIntent);
                     startActivity(intentToTrn);
                 }catch (Exception ex) {
-                    Log.e("to trn", "onItemClick: " + ex.getMessage());
                 }
             }
         });
         // Cargar la lista de torneos desde la base de datos
-        DataBaseJSON.GetTrnsTask getTournaments = new DataBaseJSON.GetTrnsTask(this, this);
+        DataBaseJSON.GetTrnsTask getTournaments = new DataBaseJSON.GetTrnsTask(this);
         getTournaments.execute();
     }
 
     /**
-     * Cargaremos otra vez la lista de torneos cuando creemos el torneo
-     * @param requestCode The integer request code originally supplied to
-     *                    startActivityForResult(), allowing you to identify who this
-     *                    result came from.
-     * @param resultCode The integer result code returned by the child activity
-     *                   through its setResult().
-     * @param data An Intent, which can return result data to the caller
-     *               (various data can be attached to Intent "extras").
-     *
+     * Teste método se llamará cuando volvamos de
      */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        DataBaseJSON.GetTrnsTask getTournaments = new DataBaseJSON.GetTrnsTask(this, this);
-        getTournaments.execute();
+    protected void onRestart() {
+        super.onRestart();
+        DataBaseJSON.GetTrnsTask getTrns = new DataBaseJSON.GetTrnsTask(new DataBaseJSON.UsuarioCallback() {
+            @Override
+            public void onUsuarioObtenido(Usuario usuario) {}
+
+            @Override
+            public void onUsersObtenido(List<Usuario> users) {}
+
+            @Override
+            public void onTrnsObtenido(List<Torneo> torneos) {
+                tournaments = torneos;
+                raTournaments.setTournaments(tournaments);
+            }
+        });
+        getTrns.execute();
     }
 
     /**

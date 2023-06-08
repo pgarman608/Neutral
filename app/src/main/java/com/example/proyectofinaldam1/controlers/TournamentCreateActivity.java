@@ -60,18 +60,7 @@ public class TournamentCreateActivity extends AppCompatActivity {
                                     Torneo torneo = new Torneo(new Random().nextInt(500000),DataBaseJSON.fbAuth.getUid(),strTitle,strInfo,Integer.parseInt(strMaxPlayer),Integer.parseInt(strPrecio));
                                     // Llamada al método createTournament para crear el torneo en la base de datos
                                     int funciona = DataBaseJSON.createTournament(torneo);
-                                    if (funciona == -1){
-                                        createToast("No funciona");
-                                    }else{
-                                        if(funciona == 1){
-                                            createToast("Funciona");
-                                            onBackPressed();
-                                        }else{
-                                            if (funciona == -2) {
-                                                createToast("No funciona da excepcion");
-                                            }
-                                        }
-                                    }
+                                    createToast("Torneo creado");
                                     onBackPressed();
                                 }else{
                                     createToast("El torneo necesita un precio por entrada");

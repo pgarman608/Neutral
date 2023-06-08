@@ -16,4 +16,6 @@
     <color name="colorBackground">#f5f5f5</color>
     <color name="colorSurface">#ffffff</color>
     <color name="colorOnSurface">#212121</color>
+    <color name="colorOrange">#f4aa00</color>
+    <color name="colorGreen">#1fad41</color>
 </resources>

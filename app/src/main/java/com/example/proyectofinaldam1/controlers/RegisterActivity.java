@@ -110,11 +110,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             if (password.length() < 6) {
                                 edPW.setError("La contraseña debe tener al menos 6 caracteres");
                             }else{
-                                int sol = DataBaseJSON.createUser(nick,password,email);
+                                DataBaseJSON.createUser(nick,password,email);
                                 intentRegister = new Intent(RegisterActivity.this, MainActivity.class);
                                 intentRegister.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intentRegister);
                                 finish();
+                                Toast.makeText(this, "Usuario creado", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
