@@ -10,72 +10,63 @@ public class Usuario {
     private String uid;
     private String nick;
     private int points;
-    private List<Set> games;
-    private List<String> idTournament;
-
+    private List<String> uidgames;
+    private List<String> uidTournament;
     public Usuario(String uid, String nick,int points) {
         this.uid = uid;
         this.nick = nick;
         this.points = points;
-        games = new ArrayList<>();
-        idTournament = new ArrayList<>();
+        this.uidgames = new ArrayList<>();
+        this.uidTournament = new ArrayList<>();
     }
 
-    public Usuario(String uid, String nick, int points, List<Set> games, List<String> idTournament) {
+    public Usuario(String uid, String nick, int points, List<String> games, List<String> idTournament) {
         this.uid = uid;
         this.nick = nick;
         this.points = points;
-        this.games = games;
-        this.idTournament = idTournament;
+        this.uidgames = games;
+        this.uidTournament = idTournament;
     }
-
     public String getUid() {
         return uid;
     }
-
     public void setUid(String uid) {
         this.uid = uid;
     }
-
     public int getPoints() {
         return points;
     }
-
     public void setPoints(int points) {
         this.points = points;
     }
-
-    public List<Set> getGames() {
-        return games;
+    public List<String> getGames() {
+        return uidgames;
     }
-
-    public void setGames(List<Set> games) {
-        this.games = games;
+    public void setGames(List<String> games) {
+        this.uidgames = games;
     }
-
-    public List<String> getIdTournament() {
-        return idTournament;
+    public String getGames(int pos) {
+        return uidgames.get(pos);
     }
-
-    public void setIdTournament(List<String> idTournament) {
-        this.idTournament = idTournament;
+    public void setGames(int pos, String uid) {
+        this.uidgames.add(pos,uid);
+    }
+    public List<String> getUidTournament() {
+        return uidTournament;
+    }
+    public void setUidTournament(int pos, String uid) {
+        this.uidTournament.add(pos,uid);
+    }
+    public String getUidTournament(int pos) {
+        return uid;
+    }
+    public void setUidTournament(List<String> idTournament) {
+        this.uidTournament = idTournament;
     }
     public String getNick() {
         return nick;
     }
-
     public void setNick(String nick) {
         this.nick = nick;
-    }
-
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "uid='" + uid + '\'' +
-                ", nick='" + nick + '\'' +
-                ", points=" + points +
-                ", games=" + games +
-                ", idTournament=" + idTournament +
-                '}';
     }
 }

@@ -5,18 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".controlers.RegisterActivity">
+
+    <View
+        android:id="@+id/view9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.8"
+        android:background="@drawable/background1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="#50212121"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.19999999"
-        app:srcCompat="@drawable/smash_ball" />
+        app:srcCompat="@drawable/logo_smash_white" />
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
+        android:background="@drawable/etsmash"
         android:id="@+id/edtNickR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,7 +43,8 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView3"
         app:layout_constraintVertical_bias="0.14999998" />
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
+        android:background="@drawable/etsmash"
         android:id="@+id/edtgmailR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,7 +57,8 @@
         app:layout_constraintTop_toBottomOf="@+id/edtNickR"
         app:layout_constraintVertical_bias="0.11" />
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
+        android:background="@drawable/etsmash"
         android:id="@+id/edtPWR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,7 +71,8 @@
         app:layout_constraintTop_toBottomOf="@+id/edtgmailR"
         app:layout_constraintVertical_bias="0.12000000" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        android:background="@drawable/btnroundedblack"
         android:id="@+id/btnRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,13 +80,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtPWR" />
+        app:layout_constraintTop_toBottomOf="@+id/edtPWR"
+        android:textColor="#fff"/>
 
     <TextView
         android:id="@+id/tvToLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Inicio Sesion"
+        android:textColor="#999999"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/btnRegister"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

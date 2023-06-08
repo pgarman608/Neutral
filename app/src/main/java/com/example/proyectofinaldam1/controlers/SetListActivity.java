@@ -43,7 +43,7 @@ public class SetListActivity extends AppCompatActivity implements DataBaseJSON.S
         String uidTrn = getIntent().getStringExtra("activity_anterior");
         sets = new ArrayList<>();
         // Ejecutar una tarea para obtener los conjuntos de datos de la base de datos de manera asíncrona
-        DataBaseJSON.GetSetsTask getSetsTask = new DataBaseJSON.GetSetsTask(uidTrn,this,this);
+        DataBaseJSON.GetSetsTask getSetsTask = new DataBaseJSON.GetSetsTask(uidTrn,this);
         getSetsTask.execute();
 
         LinearLayoutManager layout = new LinearLayoutManager(this);

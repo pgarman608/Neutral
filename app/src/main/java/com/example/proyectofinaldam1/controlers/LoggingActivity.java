@@ -34,6 +34,14 @@ public class LoggingActivity extends AppCompatActivity implements View.OnClickLi
     public static interface UserFBCallback {
         void onUser(FirebaseUser user);
     }
+
+    /**
+     * Este metodo inicia la vista y carga los componentes
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +89,7 @@ public class LoggingActivity extends AppCompatActivity implements View.OnClickLi
                                 public void onUser(FirebaseUser user) {
                                     DataBaseJSON.userFirebase = user;
                                     onBackPressed();
+                                    Toast.makeText(LoggingActivity.this, "Sesion iniciada", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -108,7 +117,6 @@ public class LoggingActivity extends AppCompatActivity implements View.OnClickLi
                         callback.onUser(user);
 
                     } else {
-                        Log.w("Nop", "signInWithEmail:failure", task.getException());
                         Toast.makeText(LoggingActivity.this, "Authentication failed.",
                                 Toast.LENGTH_SHORT).show();
                     }

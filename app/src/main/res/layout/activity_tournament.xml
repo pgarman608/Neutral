@@ -6,10 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".controlers.TournamentActivity">
 
-    <Button
+    <View
+        android:id="@+id/view7"
+        android:layout_width="wrap_content"
+        android:layout_height="270dp"
+        android:alpha="0.90"
+        android:background="#212121"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnStartTrns"
-        android:layout_width="99dp"
-        android:layout_height="52dp"
+        android:layout_width="120dp"
+        android:layout_height="49dp"
+        android:background="@drawable/btnroundedorange"
         android:text="Start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,17 +31,18 @@
         app:layout_constraintTop_toBottomOf="@+id/btnSeePlayers"
         app:layout_constraintVertical_bias="0.75" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSeeSets"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/btnroundedorange"
         android:text="Sets"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintHorizontal_bias="0.85"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvNJP"
-        app:layout_constraintVertical_bias="0.20" />
+        app:layout_constraintTop_toTopOf="@+id/view7"
+        app:layout_constraintVertical_bias="0.15" />
 
     <ImageView
         android:id="@+id/ivTrn"
@@ -83,22 +97,24 @@
         app:layout_constraintTop_toBottomOf="@+id/tvInfoTrns"
         app:layout_constraintVertical_bias="0.120000005" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSeePlayers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/btnroundedorange"
         android:text="Players"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvNJP"
-        app:layout_constraintVertical_bias="0.20" />
+        app:layout_constraintTop_toTopOf="@+id/view7"
+        app:layout_constraintVertical_bias="0.14999998" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnUnite"
-        android:layout_width="99dp"
-        android:layout_height="52dp"
+        android:layout_width="125dp"
+        android:layout_height="50dp"
+        android:background="@drawable/btnroundedorange"
         android:text="Unirse"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -114,7 +130,7 @@
         android:text="TextView"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/view7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
@@ -125,10 +141,11 @@
         android:id="@+id/tvMJP"
         android:layout_width="141dp"
         android:layout_height="34dp"
+        android:layout_marginBottom="73dp"
         android:text="TextView"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/view7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
@@ -146,7 +163,7 @@
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPointTrn"
-        app:layout_constraintVertical_bias="0.225" />
+        app:layout_constraintVertical_bias="0.12" />
 
     <TextView
         android:id="@+id/textView15"
@@ -159,7 +176,7 @@
         app:layout_constraintHorizontal_bias="0.74"
         app:layout_constraintStart_toEndOf="@+id/textView13"
         app:layout_constraintTop_toBottomOf="@+id/tvPointTrn"
-        app:layout_constraintVertical_bias="0.225" />
+        app:layout_constraintVertical_bias="0.12" />
 
     <TextView
         android:id="@+id/textView11"
@@ -172,4 +189,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvInfoTrns"
         app:layout_constraintVertical_bias="1.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

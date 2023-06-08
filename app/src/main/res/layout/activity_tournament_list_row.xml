@@ -20,14 +20,16 @@
         app:layout_constraintVertical_bias="0.01"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnEnterTrns"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/btnroundedorange"
         android:text="Entrar"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintHorizontal_bias="0.85"
         app:layout_constraintStart_toEndOf="@+id/ivTrnsRow"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,7 +43,7 @@
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toEndOf="@+id/ivTrnsRow"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.55" />
+        app:layout_constraintVertical_bias="0.6" />
 
     <TextView
         android:id="@+id/tvNameTrnsRow"
@@ -53,5 +55,5 @@
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toEndOf="@+id/ivTrnsRow"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25" />
+        app:layout_constraintVertical_bias="0.3" />
 </androidx.constraintlayout.widget.ConstraintLayout>

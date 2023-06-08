@@ -90,11 +90,11 @@ public class TournamentActivity extends AppCompatActivity implements DataBaseJSO
          * cuando el numero de usuario no sea superior al numero de usuarios
          */
         if (DataBaseJSON.userFirebase == null || existUsrTrn() != 0 || torneo.getSets() != null || torneo.getEnd() != 0) {
-            btnJoins.setEnabled(false);
+            btnJoins.setVisibility(View.INVISIBLE);
         }
         //Si no existe la lista de los sets no mostraremos el boton para los sets
         if (torneo.getSets() == null){
-            btnSets.setEnabled(false);
+            btnSets.setVisibility(View.INVISIBLE);
         }
         //Si los sets no están creados y somos el creador el torneo mostraremos el btn de start
         if (DataBaseJSON.userFirebase == null ||!DataBaseJSON.userFirebase.getUid().equals(""+torneo.getUidCreator())){
@@ -112,7 +112,7 @@ public class TournamentActivity extends AppCompatActivity implements DataBaseJSO
         btnStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (usuarios != null){
+                if (torneo.getUsersList() != null){
                     Set setTmp = null;
                     //Ordenadaremos la lista de usuarios
                     Collections.sort(usuarios, new Comparator<Usuario>() {
@@ -123,8 +123,18 @@ public class TournamentActivity extends AppCompatActivity implements DataBaseJSO
                     });
                     //Crearemos los sets con el numero de usuarios
                     for (int i = 0; i < usuarios.size(); i+=2) {
+                        //necesotamos comprobar que hay dos jugadores o mas
                         if (usuarios.size() != i+1 && usuarios.get(i+1) != null){
+                            //Creamos un set con los dos jugadores
                             setTmp = new Set(torneo.getUid(),new Random().nextInt(500000),usuarios.get(i),usuarios.get(i+1),createCaracter()+""+1);
+                            //Si un jugador no tiene la lista de lod ids de los torneos la crearemos y le añadiremos la id
+                            if (usuarios.get(i).getGames() == null || usuarios.get(i).getGames().isEmpty()){
+                                usuarios.get(i).setGames(new ArrayList<>());
+                                usuarios.get(i).setGames(0,"" + setTmp.getUid());
+                                DataBaseJSON.setUsuario(usuarios.get(i));
+                            }else{
+                                usuarios.get(i).setGames(usuarios.get(i).getGames().size()-1,"" + setTmp.getUid());
+                            }
                         }else{
                             setTmp = new Set(torneo.getUid(),new Random().nextInt(500000),usuarios.get(i),null,createCaracter()+""+1);
                         }
@@ -137,10 +147,11 @@ public class TournamentActivity extends AppCompatActivity implements DataBaseJSO
                         //Crearemos los sets
                         DataBaseJSON.createSet(setTmp);
                     }
+                    //Modificaremos el set
                     DataBaseJSON.setTrn(torneo);
                     Toast.makeText(TournamentActivity.this, "Torneo empezado", Toast.LENGTH_SHORT).show();
-                    btnStar.setEnabled(false);
-                    btnSets.setEnabled(true);
+                    btnStar.setVisibility(View.INVISIBLE);
+                    btnSets.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -170,16 +181,37 @@ public class TournamentActivity extends AppCompatActivity implements DataBaseJSO
         btnJoins.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Si no hay una lista de usuarios, la creamos
                 if (torneo.getUsersList() == null){
                     torneo.setUsersList(new ArrayList<>());
                 }
+                DataBaseJSON.getUsuario(DataBaseJSON.userFirebase.getUid(), new DataBaseJSON.UsuarioCallback() {
+                    @Override
+                    public void onUsuarioObtenido(Usuario usuario) {
+                        //Si el usuario no tiene una lista de ids de torenos la crearemos y se la añadiremos
+                        if (usuario.getUidTournament() == null ||  usuario.getUidTournament().isEmpty()){
+                            usuario.setUidTournament(new ArrayList<>());
+                            usuario.setUidTournament(0,"" + torneo.getUid());
+                        }else{
+                            usuario.setUidTournament(usuario.getUidTournament().size()-1,"" + torneo.getUid());
+                        }
+                        usuarios.add(usuario);
+                        Toast.makeText(TournamentActivity.this, "Usuario añadido al torneo", Toast.LENGTH_SHORT).show();
+                        DataBaseJSON.setUsuario(usuario);
+                    }
+                    @Override
+                    public void onUsersObtenido(List<Usuario> users) {}
+                    @Override
+                    public void onTrnsObtenido(List<Torneo> torneos) {}
+                });
+                //Mostraremos la información que hemos modificado en la vista
                 torneo.setUsersList(torneo.getUsersList().size(),DataBaseJSON.userFirebase.getUid());
                 torneo.setAllPoints(torneo.getAllPoints() + usuario.getPoints());
                 tvPoints.setText("" + torneo.getAllPoints());
                 tvPlayers.setText(""+torneo.getUsersList().size());
                 Toast.makeText(TournamentActivity.this, "Te has unido a :" + torneo.getName(), Toast.LENGTH_SHORT).show();
                 DataBaseJSON.setTrn(torneo);
-                btnJoins.setEnabled(false);
+                btnJoins.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -199,14 +231,29 @@ public class TournamentActivity extends AppCompatActivity implements DataBaseJSO
         }
         return exist;
     }
+
+    /**
+     * En este metodo recogo un usuario de la base de datos
+     * @param usuario
+     */
     @Override
     public void onUsuarioObtenido(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    /**
+     * En este metodo recogo una lista de usuarios
+     * @param users
+     */
     @Override
     public void onUsersObtenido(List<Usuario> users) {
         this.usuarios = users;
     }
+
+    /**
+     * Un metod sin uso en esta vista
+     * @param torneos
+     */
     @Override
     public void onTrnsObtenido(List<Torneo> torneos) {}
 
