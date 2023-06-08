@@ -24,7 +24,7 @@
         android:id="@+id/btnEnterTrns"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/btnroundedorange"
+        android:background="@drawable/btnroundedgreen"
         android:text="Entrar"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"

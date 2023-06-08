@@ -429,21 +429,24 @@ public class DataBaseJSON {
                                 Gson gson = new Gson();
                                 String json = gson.toJson(childData);
                                 Usuario usuario = gson.fromJson(json, Usuario.class);
+                                /**
+                                 * Si el tier es -2 cargaremos los usuarios de una lista especifica
+                                 * Si el tier es -1 cargaremos todos los usuarios
+                                 * Si es superior cargaremos los usuarios de unos puntos en concreto
+                                 */
                                 if (tier == -2){
                                     if (usrs != null){
                                         for (int i = 0; i < usrs.size(); i++) {
                                             if (usuario.getUid().equals(usrs.get(i))){
-                                                Log.e("TAG1", "onComplete: sasf" );
                                                 users.add(usuario);
                                             }
                                         }
                                     }
                                 }else{
-                                    Log.e("TAG2", "onComplete: hjhjhj" );
                                     if (tier == -1){
                                         users.add(usuario);
                                     }else{
-                                        if (usuario.getPoints() <= tier){
+                                        if (usuario.getPoints() >= tier-500 && usuario.getPoints() <= tier){
                                             users.add(usuario);
                                         }
                                     }

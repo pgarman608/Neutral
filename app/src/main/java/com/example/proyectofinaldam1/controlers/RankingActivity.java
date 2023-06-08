@@ -55,13 +55,13 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
                 intentRnk.putExtra("Tier",300);
                 break;
             case R.id.vTierB:
-                intentRnk.putExtra("Tier",700);
+                intentRnk.putExtra("Tier",800);
                 break;
             case R.id.vTierA:
-                intentRnk.putExtra("Tier",1000);
+                intentRnk.putExtra("Tier",1300);
                 break;
             case R.id.vTierS:
-                intentRnk.putExtra("Tier",2000);
+                intentRnk.putExtra("Tier",1800);
                 break;
         }
         startActivity(intentRnk);
