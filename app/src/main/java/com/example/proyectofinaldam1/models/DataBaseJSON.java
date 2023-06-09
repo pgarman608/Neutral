@@ -39,6 +39,9 @@ public class DataBaseJSON {
     public static interface SetCallback{
         void onGetSets(List<Set> sets);
     }
+    public static  interface FireUserCallback{
+        void onUsuarioObtenido(FirebaseUser usuario);
+    }
     private static int solucion;
     /**
      * Crea un nuevo usuario en Firebase Authentication y guarda la información en la base de datos Firebase Realtime Database.
@@ -60,7 +63,8 @@ public class DataBaseJSON {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Obtiene el usuario actualmente autenticado
-                            DataBaseJSON.userFirebase = FirebaseAuth.getInstance().getCurrentUser();
+                            userFirebase = FirebaseAuth.getInstance().getCurrentUser();
+
                             if (DataBaseJSON.userFirebase != null) {
                                 // Actualiza el nombre de usuario en el perfil del usuario
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -361,7 +365,7 @@ public class DataBaseJSON {
                         if (usrUID == null){
                             torneos.add(trn);
                         }else{
-                            if (trn.getUsersList().contains(usrUID)){
+                            if (trn.getUsersList() != null && trn.getUsersList().contains(usrUID)){
                                 torneos.add(trn);
                             }
                         }

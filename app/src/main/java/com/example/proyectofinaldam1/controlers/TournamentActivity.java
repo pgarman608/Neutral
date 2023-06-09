@@ -1,5 +1,6 @@
 package com.example.proyectofinaldam1.controlers;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -18,12 +19,17 @@ import com.example.proyectofinaldam1.models.DataBaseJSON;
 import com.example.proyectofinaldam1.models.Set;
 import com.example.proyectofinaldam1.models.Torneo;
 import com.example.proyectofinaldam1.models.Usuario;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -97,13 +103,13 @@ public class TournamentActivity extends AppCompatActivity implements DataBaseJSO
             btnSets.setVisibility(View.INVISIBLE);
         }
         //Si los sets no están creados y somos el creador el torneo mostraremos el btn de start
-        if (DataBaseJSON.userFirebase == null ||!DataBaseJSON.userFirebase.getUid().equals(""+torneo.getUidCreator())){
+        if (DataBaseJSON.userFirebase == null ||!DataBaseJSON.userFirebase.getUid().equals(""+torneo.getUidCreator()) || torneo.getSets() != null){
             btnStar.setVisibility(View.INVISIBLE);
         }
+        comprSet();
         // Obtener la lista de usuarios del torneo desde la base de datos
-        DataBaseJSON.GetUsersTask getUsersTask = new DataBaseJSON.GetUsersTask(torneo.getUsersList(),this);
-        getUsersTask.execute();
-        usuarios = null;
+        usuarios = new ArrayList<>();
+        cargarDatos(null);
         // Obtener el usuario actual desde la base de datos
         if (DataBaseJSON.userFirebase != null){
             DataBaseJSON.getUsuario(DataBaseJSON.userFirebase.getUid(),this);
@@ -112,47 +118,54 @@ public class TournamentActivity extends AppCompatActivity implements DataBaseJSO
         btnStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (torneo.getUsersList() != null){
-                    Set setTmp = null;
-                    //Ordenadaremos la lista de usuarios
-                    Collections.sort(usuarios, new Comparator<Usuario>() {
-                        @Override
-                        public int compare(Usuario u1, Usuario u2) {
-                            return Integer.compare(u1.getPoints(), u2.getPoints());
-                        }
-                    });
-                    //Crearemos los sets con el numero de usuarios
-                    for (int i = 0; i < usuarios.size(); i+=2) {
-                        //necesotamos comprobar que hay dos jugadores o mas
-                        if (usuarios.size() != i+1 && usuarios.get(i+1) != null){
-                            //Creamos un set con los dos jugadores
-                            setTmp = new Set(torneo.getUid(),new Random().nextInt(500000),usuarios.get(i),usuarios.get(i+1),createCaracter()+""+1);
-                            //Si un jugador no tiene la lista de lod ids de los torneos la crearemos y le añadiremos la id
-                            if (usuarios.get(i).getGames() == null || usuarios.get(i).getGames().isEmpty()){
-                                usuarios.get(i).setGames(new ArrayList<>());
-                                usuarios.get(i).setGames(0,"" + setTmp.getUid());
-                                DataBaseJSON.setUsuario(usuarios.get(i));
-                            }else{
-                                usuarios.get(i).setGames(usuarios.get(i).getGames().size()-1,"" + setTmp.getUid());
+                cargarDatos(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (torneo.getUsersList() != null){
+                            Set setTmp = null;
+                            //Ordenadaremos la lista de usuarios
+                            Collections.sort(usuarios, new Comparator<Usuario>() {
+                                @Override
+                                public int compare(Usuario u1, Usuario u2) {
+                                    return Integer.compare(u1.getPoints(), u2.getPoints());
+                                }
+                            });
+                            Log.e("lolo", "onUsersObtenido: " + usuarios.size());
+                            //Crearemos los sets con el numero de usuarios
+                            for (int i = 0; i < usuarios.size(); i+=2) {
+                                //necesotamos comprobar que hay dos jugadores o mas
+                                if (usuarios.size() != i+1 && usuarios.get(i+1) != null){
+                                    //Creamos un set con los dos jugadores
+                                    Toast.makeText(TournamentActivity.this, "Torneo empezado", Toast.LENGTH_SHORT).show();
+                                    setTmp = new Set(torneo.getUid(),new Random().nextInt(500000),usuarios.get(i),usuarios.get(i+1),createCaracter()+""+1);
+                                    //Si un jugador no tiene la lista de lod ids de los torneos la crearemos y le añadiremos la id
+                                    if (usuarios.get(i).getGames() == null || usuarios.get(i).getGames().isEmpty()){
+                                        usuarios.get(i).setGames(new ArrayList<>());
+                                        usuarios.get(i).setGames(0,"" + setTmp.getUid());
+                                        DataBaseJSON.setUsuario(usuarios.get(i));
+                                    }else{
+                                        usuarios.get(i).setGames(usuarios.get(i).getGames().size()-1,"" + setTmp.getUid());
+                                    }
+                                }else{
+                                }
+                                //Guardaremos los sets en la lista de sets del torneo
+                                if (i == 0){
+                                    torneo.setSets(0,""+setTmp.getUid());
+                                }else {
+                                    torneo.setSets(i / 2, "" + setTmp.getUid());
+                                }
+                                //Crearemos los sets
+                                DataBaseJSON.createSet(setTmp);
                             }
+                            //Modificaremos el set
+                            DataBaseJSON.setTrn(torneo);
+                            btnStar.setVisibility(View.INVISIBLE);
+                            btnSets.setVisibility(View.VISIBLE);
                         }else{
-                            setTmp = new Set(torneo.getUid(),new Random().nextInt(500000),usuarios.get(i),null,createCaracter()+""+1);
+                            Toast.makeText(TournamentActivity.this, "WHAT", Toast.LENGTH_SHORT).show();
                         }
-                        //Guardaremos los sets en la lista de sets del torneo
-                        if (i == 0){
-                            torneo.setSets(0,""+setTmp.getUid());
-                        }else {
-                            torneo.setSets(i / 2, "" + setTmp.getUid());
-                        }
-                        //Crearemos los sets
-                        DataBaseJSON.createSet(setTmp);
                     }
-                    //Modificaremos el set
-                    DataBaseJSON.setTrn(torneo);
-                    Toast.makeText(TournamentActivity.this, "Torneo empezado", Toast.LENGTH_SHORT).show();
-                    btnStar.setVisibility(View.INVISIBLE);
-                    btnSets.setVisibility(View.VISIBLE);
-                }
+                });
             }
         });
         //Cuando pulsemos en el btn de sets veremos los sets disponibles en otra activity
@@ -160,7 +173,7 @@ public class TournamentActivity extends AppCompatActivity implements DataBaseJSO
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TournamentActivity.this, SetListActivity.class);
-                if (torneo.getUsersList() != null || torneo.getUsersList().size() >0){
+                if (torneo.getUsersList() != null && torneo.getUsersList().size() >0){
                     intent.putExtra("activity_anterior",""+torneo.getUid());
                     startActivity(intent);
                 }else{
@@ -185,35 +198,73 @@ public class TournamentActivity extends AppCompatActivity implements DataBaseJSO
                 if (torneo.getUsersList() == null){
                     torneo.setUsersList(new ArrayList<>());
                 }
-                DataBaseJSON.getUsuario(DataBaseJSON.userFirebase.getUid(), new DataBaseJSON.UsuarioCallback() {
+                cargarDatos(new Runnable() {
                     @Override
-                    public void onUsuarioObtenido(Usuario usuario) {
-                        //Si el usuario no tiene una lista de ids de torenos la crearemos y se la añadiremos
-                        if (usuario.getUidTournament() == null ||  usuario.getUidTournament().isEmpty()){
-                            usuario.setUidTournament(new ArrayList<>());
-                            usuario.setUidTournament(0,"" + torneo.getUid());
+                    public void run() {
+                        DataBaseJSON.getUsuario(DataBaseJSON.userFirebase.getUid(), new DataBaseJSON.UsuarioCallback() {
+                            @Override
+                            public void onUsuarioObtenido(Usuario usuario) {
+                                //Si el usuario no tiene una lista de ids de torenos la crearemos y se la añadiremos
+                                if (usuario.getUidTournament() == null ||  usuario.getUidTournament().isEmpty()){
+                                    usuario.setUidTournament(new ArrayList<>());
+                                    usuario.setUidTournament(0,"" + torneo.getUid());
+                                }else{
+                                    usuario.setUidTournament(usuario.getUidTournament().size()-1,"" + torneo.getUid());
+                                }
+                                usuarios.add(usuario);
+                                Toast.makeText(TournamentActivity.this, "Usuario añadido al torneo", Toast.LENGTH_SHORT).show();
+                                DataBaseJSON.setUsuario(usuario);
+                            }
+                            @Override
+                            public void onUsersObtenido(List<Usuario> users) {}
+                            @Override
+                            public void onTrnsObtenido(List<Torneo> torneos) {}
+                        });
+
+                        if (torneo.getUsersList() != null ){
+                            torneo.setUsersList(torneo.getUsersList().size(),DataBaseJSON.userFirebase.getUid());
+                            tvPlayers.setText(""+torneo.getUsersList().size());
                         }else{
-                            usuario.setUidTournament(usuario.getUidTournament().size()-1,"" + torneo.getUid());
+                            torneo.setUsersList(new ArrayList<>());
+                            torneo.setUsersList(0,DataBaseJSON.userFirebase.getUid());
+                            tvPlayers.setText("1");
                         }
-                        usuarios.add(usuario);
-                        Toast.makeText(TournamentActivity.this, "Usuario añadido al torneo", Toast.LENGTH_SHORT).show();
-                        DataBaseJSON.setUsuario(usuario);
+                        //Mostraremos la información que hemos modificado en la vista
+                        torneo.setAllPoints(torneo.getAllPoints() + usuario.getPoints());
+                        tvPoints.setText("" + torneo.getAllPoints());
+                        Toast.makeText(TournamentActivity.this, "Te has unido a :" + torneo.getName(), Toast.LENGTH_SHORT).show();
+                        DataBaseJSON.setTrn(torneo);
+                        btnJoins.setVisibility(View.INVISIBLE);
                     }
-                    @Override
-                    public void onUsersObtenido(List<Usuario> users) {}
-                    @Override
-                    public void onTrnsObtenido(List<Torneo> torneos) {}
                 });
-                //Mostraremos la información que hemos modificado en la vista
-                torneo.setUsersList(torneo.getUsersList().size(),DataBaseJSON.userFirebase.getUid());
-                torneo.setAllPoints(torneo.getAllPoints() + usuario.getPoints());
-                tvPoints.setText("" + torneo.getAllPoints());
-                tvPlayers.setText(""+torneo.getUsersList().size());
-                Toast.makeText(TournamentActivity.this, "Te has unido a :" + torneo.getName(), Toast.LENGTH_SHORT).show();
-                DataBaseJSON.setTrn(torneo);
-                btnJoins.setVisibility(View.INVISIBLE);
             }
         });
+    }
+    /**
+     * Realiza una consulta a la base de datos para actualizar el torneo y comprueba si se han establecido los sets.
+     * Si los sets están establecidos, oculta el botón "btnJoins" y muestra el botón "btnSets".
+     */
+    private void comprSet() {
+        DatabaseReference updateTrn = DataBaseJSON.dbFirebase.getReference("Torneos").child(""+torneo.getUid());
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    HashMap<String, Object> childData = (HashMap<String, Object>) snapshot.getValue();
+                    Gson gson = new Gson();
+                    String json = gson.toJson(childData);
+                    Torneo torneo1 = gson.fromJson(json, Torneo.class);
+                    torneo = torneo1;
+                    if (torneo.getSets()!=null){
+                        btnJoins.setVisibility(View.INVISIBLE);
+                        btnSets.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        };
+        updateTrn.addValueEventListener(listener);
     }
 
     /**
@@ -232,6 +283,47 @@ public class TournamentActivity extends AppCompatActivity implements DataBaseJSO
         return exist;
     }
 
+    /**
+     * En este metodo cargo los datos del toreno para hacer modificaciones enlocal
+     * @param runnable
+     */
+    private void cargarDatos(Runnable runnable){
+        DataBaseJSON.GetTrnsTask trnsTask = new DataBaseJSON.GetTrnsTask(new DataBaseJSON.UsuarioCallback() {
+            @Override
+            public void onUsuarioObtenido(Usuario usuario) {}
+
+            @Override
+            public void onUsersObtenido(List<Usuario> users) {}
+            @Override
+            public void onTrnsObtenido(List<Torneo> trns) {
+                for (int i = 0; i < trns.size(); i++) {
+                    if (trns.get(i).getUid() == torneo.getUid()) {
+                        //Compruebo que el torneo es el que estoy modifificando
+                        torneo = trns.get(i);
+                    }
+                }
+                //Recogo todos los usuarios del torneo
+                DataBaseJSON.GetUsersTask UsersTask = new DataBaseJSON.GetUsersTask(torneo.getUsersList(), new DataBaseJSON.UsuarioCallback() {
+                    @Override
+                    public void onUsuarioObtenido(Usuario usuario) {
+                    }
+
+                    @Override
+                    public void onUsersObtenido(List<Usuario> users) {
+                        usuarios = users;
+                        if (runnable != null)
+                            runnable.run();
+                    }
+                    @Override
+                    public void onTrnsObtenido(List<Torneo> torneos) {}
+                });
+                UsersTask.execute();
+            }
+        });
+        trnsTask.execute();
+    }
+    private void pruebados(){
+    }
     /**
      * En este metodo recogo un usuario de la base de datos
      * @param usuario

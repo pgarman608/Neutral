@@ -1,6 +1,7 @@
 package com.example.proyectofinaldam1.controlers;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -56,6 +57,10 @@ public class LoggingActivity extends AppCompatActivity implements View.OnClickLi
 
         tvToRegister.setOnClickListener(this);
         btnLog.setOnClickListener(this);
+        if (getIntent().getStringExtra("email" )!= null){
+            etPW.setText(getIntent().getStringExtra("password"));
+            etGMAIL.setText(getIntent().getStringExtra("email"));
+        }
     }
 
     /**
@@ -88,7 +93,8 @@ public class LoggingActivity extends AppCompatActivity implements View.OnClickLi
                                 @Override
                                 public void onUser(FirebaseUser user) {
                                     DataBaseJSON.userFirebase = user;
-                                    onBackPressed();
+                                    Intent intent = new Intent(LoggingActivity.this,MainActivity.class);
+                                    startActivity(intent);
                                     Toast.makeText(LoggingActivity.this, "Sesion iniciada", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -122,5 +128,26 @@ public class LoggingActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 }
             });
+    }
+
+    /**
+     * Si el usuario a vuelto del logging se autocompletaran los datos introducidos anteriormente
+     * @param requestCode The integer request code originally supplied to
+     *                    startActivityForResult(), allowing you to identify who this
+     *                    result came from.
+     * @param resultCode The integer result code returned by the child activity
+     *                   through its setResult().
+     * @param data An Intent, which can return result data to the caller
+     *               (various data can be attached to Intent "extras").
+     *
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e("asds ", "onActivityResult: " + getIntent().getStringExtra("password"));
+        if (resultCode == RESULT_OK){
+            etPW.setText(getIntent().getStringExtra("password"));
+            etGMAIL.setText(getIntent().getStringExtra("email"));
+        }
     }
 }

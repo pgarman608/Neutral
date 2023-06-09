@@ -218,7 +218,7 @@ public class AnimatedCharapter {
      * @param tvJP1
      */
     public void moveCenterToLeft(Context context, ImageView imgJP1, ImageView imgChrJP1, TextView tvJP1){
-        if (seccion >= 2){
+        if (seccion != 0){
             imgJP1.setRotationY(-180);
             Animation animation = AnimationUtils.loadAnimation(context, R.anim.moveoutjp1);
             animation.setAnimationListener(new Animation.AnimationListener() {
@@ -249,7 +249,7 @@ public class AnimatedCharapter {
      * @param tvJP2
      */
     public void moveCenterToRight(Context context, ImageView imgJP2, ImageView imgChrJP2, TextView tvJP2){
-        if (seccion >= 2){
+        if (seccion !=0){
             Animation animation = AnimationUtils.loadAnimation(context, R.anim.moveoutjp2);
             imgJP2.setRotationY(0);
             animation.setAnimationListener(new Animation.AnimationListener() {

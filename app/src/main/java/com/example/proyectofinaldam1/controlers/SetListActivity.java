@@ -1,5 +1,6 @@
 package com.example.proyectofinaldam1.controlers;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,9 +16,16 @@ import com.example.proyectofinaldam1.adapters.RaTournaments;
 import com.example.proyectofinaldam1.models.DataBaseJSON;
 import com.example.proyectofinaldam1.models.Set;
 import com.example.proyectofinaldam1.models.Usuario;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class SetListActivity extends AppCompatActivity implements DataBaseJSON.SetCallback{
@@ -64,6 +72,31 @@ public class SetListActivity extends AppCompatActivity implements DataBaseJSON.S
                 startActivity(intentToUser);
             }
         });
+        //Si hay cambios en los sets mientras el usuario esta mirando esta vista se actualizaran los datos
+        DatabaseReference setsUpdate = DataBaseJSON.dbFirebase.getReference("Sets");
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                HashMap<String, Object> childData = (HashMap<String, Object>) snapshot.getValue();
+                Gson gson = new Gson();
+                String json = gson.toJson(childData);
+                Set[] tmpSet = gson.fromJson(json, Set[].class);
+                List<Set> valueSet = Arrays.asList(tmpSet);
+                for (int i = 0; i <sets.size(); i++) {
+                    for (int j = 0; j < valueSet.size(); j++) {
+                        if (sets.get(i).getUidTrns() == valueSet.get(j).getUidTrns()){
+                            sets.add(i,valueSet.get(j));
+                        }
+                    }
+                }
+                raSets.setSets(sets);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
     }
 
     /**

@@ -45,21 +45,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText edGMAIL;
     private EditText edPW;
     private Button btnRegister;
     private EditText edNick;
     private TextView tvTolog;
 
+    public static interface UserFBCallback {
+        void onUser(FirebaseUser user);
+    }
+
     /**
      * Aquí se configura la interfaz de usuario y se realizan las inicializaciones necesarias.
      * Se establece el color de la barra de estado. Se obtiene una instancia de FirebaseAuth.
      * Se obtienen las referencias a los elementos de la interfaz de usuario, como los EditText y los botones.
      * Se establecen listeners de clic en el botón de registro y en el texto para ir al inicio de sesión.
+     *
      * @param savedInstanceState If the activity is being re-initialized after
-     *     previously being shut down then this Bundle contains the data it most
-     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *                           previously being shut down then this Bundle contains the data it most
+     *                           recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,12 +90,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      * para limpiar la pila de actividades y evitar que se pueda volver atrás.
      * Si se hace clic en el texto para ir al inicio de sesión, se crea un intent para abrir la actividad LoggingActivity.
      * Finalmente, se inicia la actividad correspondiente y se finaliza la actividad actual.
+     *
      * @param v The view that was clicked.
      */
     @Override
     public void onClick(View v) {
         Intent intentRegister = null;
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btnRegister:
                 String email = edGMAIL.getText().toString().trim();
                 String password = edPW.getText().toString().trim();
@@ -100,22 +106,21 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                 if (TextUtils.isEmpty(nick)) {
                     edNick.setError("Ingrese un nick para su cuenta");
-                }else{
+                } else {
                     if (TextUtils.isEmpty(email)) {
                         edGMAIL.setError("Ingrese su dirección de correo electrónico");
-                    }else{
+                    } else {
                         if (TextUtils.isEmpty(password)) {
                             edPW.setError("Ingrese su contraseña");
-                        }else{
+                        } else {
                             if (password.length() < 6) {
                                 edPW.setError("La contraseña debe tener al menos 6 caracteres");
-                            }else{
-                                DataBaseJSON.createUser(nick,password,email);
-                                intentRegister = new Intent(RegisterActivity.this, MainActivity.class);
-                                intentRegister.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            } else {
+                                DataBaseJSON.createUser(nick, password, email);
+                                intentRegister = new Intent(RegisterActivity.this, LoggingActivity.class);
+                                intentRegister.putExtra("password", password);
+                                intentRegister.putExtra("email", email);
                                 startActivity(intentRegister);
-                                finish();
-                                Toast.makeText(this, "Usuario creado", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -127,12 +132,5 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
         }
-    }
-    /**
-     * Este metodo se usará para volver al MainActivity cuando creemos el usuario
-     */
-    @Override
-    public void onBackPressed() {
-        finishAffinity();
     }
 }

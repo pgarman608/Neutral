@@ -155,10 +155,10 @@ public class SetActivity extends AppCompatActivity {
         }else{
             setGame.setJp2join(1);
         }
+        DataBaseJSON.setSet(setGame);
         if (setGame.getGames() != null){
             setPoints();
         }
-        DataBaseJSON.setSet(setGame);
         DatabaseReference newR = DataBaseJSON.dbFirebase.getReference("Sets").child(""+setGame.getUid());
         tvRnd.setText("Ronda :" + setGame.getRound());
         if (setGame.getStages() == null){
@@ -168,6 +168,7 @@ public class SetActivity extends AppCompatActivity {
         }else{
             imgBg.setImageResource(setGame.getStages(pos));
         }
+        DataBaseJSON.setSet(setGame);
         if (setGame.getChar_j1() == null){
             setGame.setListChar_j1(new ArrayList<>());
             setGame.setChar_j1(0,0);
@@ -201,6 +202,9 @@ public class SetActivity extends AppCompatActivity {
                                         imgChrJP2.setImageResource(set.getChar_j2(pos));
                                 }
                             }catch (Exception ex){}
+                            if (set.getChar_j2().size() == pos){
+                                pos--;
+                            }
                             //Comprobar que los dos usuarios han seleccionado el personaje
                             if (set.getChar_j2(pos)!= 0 && set.getChar_j1(pos)!= 0){
                                 progressSet.setVisibility(View.INVISIBLE);
@@ -234,11 +238,12 @@ public class SetActivity extends AppCompatActivity {
                                         setPoints();
                                         pos++;
                                         if (animeChrJP2.getSeccion() != 0){
-                                            playing = 2;
+                                            playing = 3;
                                         }
                                         spIcon.setVisibility(View.VISIBLE);
                                         findViewById(R.id.ttlChr).setVisibility(View.VISIBLE);
                                         spIcon.setEnabled(true);
+                                        pelearse(set);
                                     }else{
                                         //Si el jugador dos uno gana actualizaremos la informacion del set
                                         if (set.getGames(pos) == 1){
@@ -249,7 +254,7 @@ public class SetActivity extends AppCompatActivity {
                                             setPoints();
                                             pos++;
                                             if (animeChrJP2.getSeccion() != 0){
-                                                playing = 3;
+                                                playing = 2;
                                             }
                                             spIcon.setEnabled(true);
                                             spIcon.setVisibility(View.VISIBLE);
@@ -284,6 +289,8 @@ public class SetActivity extends AppCompatActivity {
                 intentStage.putExtra("pos",pos);
                 intentStage.putExtra("set",gson.toJson(setGame,Set.class));
                 startActivityForResult(intentStage,REQUEST_CODE);
+                findViewById(R.id.ttlScene).setVisibility(View.INVISIBLE);
+
             }
         });
         //Nos guardara el personaje elegido en la base de datos
@@ -314,6 +321,7 @@ public class SetActivity extends AppCompatActivity {
                 }
                 pos++;
                 setGame.setGames(pos,0);
+                setGame.setStartSS(1);
                 DataBaseJSON.setSet(setGame);
                 btnWJP1.setEnabled(false);
                 btnWJP2.setEnabled(false);
@@ -336,6 +344,7 @@ public class SetActivity extends AppCompatActivity {
                 }
                 pos++;
                 setGame.setGames(pos,0);
+                setGame.setStartSS(0);
                 DataBaseJSON.setSet(setGame);
                 btnWJP1.setEnabled(false);
                 btnWJP2.setEnabled(false);
@@ -371,7 +380,6 @@ public class SetActivity extends AppCompatActivity {
                     btnSelectChr.setEnabled(true);
                 }else{
                     btnSelectChr.setEnabled(false);
-                    Toast.makeText(SetActivity.this,"Porfavor, Elige un personaje", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
@@ -386,6 +394,7 @@ public class SetActivity extends AppCompatActivity {
      * @param set
      */
     private void pelearse(Set set){
+        findViewById(R.id.ttlScene).setVisibility(View.INVISIBLE);
         imgBg.setImageResource(set.getStages(pos));
         progressSet.setVisibility(View.VISIBLE);
         playing = 1;
@@ -488,7 +497,6 @@ public class SetActivity extends AppCompatActivity {
                                 animeChrJP2.setPostStatus(0);
                                 animeChrJP1.moveCenterToLeft(SetActivity.this,imgJP1,imgChrJP1,tvJP1);
                                 animeChrJP2.moveCenterToRight(SetActivity.this,imgJP2,imgChrJP2,tvJP2);
-
                             }
                             if (setGame.getEnd() != 1){
                                 handlerJP1.postDelayed(this, 150);
@@ -588,6 +596,7 @@ public class SetActivity extends AppCompatActivity {
             Set set = gson.fromJson(strset,Set.class);
             imgBg.setImageResource(set.getStages(pos));
             DataBaseJSON.setSet(set);
+            findViewById(R.id.ttlScene).setVisibility(View.INVISIBLE);
         }
     }
 
@@ -600,11 +609,11 @@ public class SetActivity extends AppCompatActivity {
         for (int i = 0; i < setGame.getGames().size(); i++) {
             if (setGame.getGames().get(i) == 1){
                 point2++;
-                setPrb(1,(33*point2),pbJP1.getProgress());
+                setPrb(1,33*point2,100);
             }else{
                 if (setGame.getGames().get(i) == 2){
                     point1++;
-                    setPrb(2,(33*point1),pbJP2.getProgress());
+                    setPrb(2,33*point1,100);
                 }
             }
         }
@@ -632,6 +641,7 @@ public class SetActivity extends AppCompatActivity {
         String aux = "";
         // Verificar el estado de la partida
         if (setGame.getEnd() == 1){
+            tvActualizar.setVisibility(View.VISIBLE);
             tvActualizar.setBackgroundColor(Color.rgb(0, 102, 255));
             aux = setGame.getUid_j1().getNick();
             //Actualizamos el punto del ganador JP1
@@ -659,6 +669,7 @@ public class SetActivity extends AppCompatActivity {
                 public void onTrnsObtenido(List<Torneo> torneos) {}
             });
         }else{
+            tvActualizar.setVisibility(View.VISIBLE);
             tvActualizar.setBackgroundColor(Color.rgb(255, 0, 0));
             aux = setGame.getUid_j2().getNick();
             //Actualizamos el punto del ganador JP2

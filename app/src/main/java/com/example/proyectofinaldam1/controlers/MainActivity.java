@@ -207,4 +207,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onTrnsObtenido(List<Torneo> torneos) {}
         });
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (DataBaseJSON.userFirebase != null){
+            getUsuario();
+            logBtn.setText(DataBaseJSON.userFirebase.getDisplayName().substring(0,3));
+        }else{
+            registerForContextMenu(logBtn);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (DataBaseJSON.userFirebase != null){
+            Log.e("adios", "onRestart: " + DataBaseJSON.userFirebase.getUid());
+            getUsuario();
+            logBtn.setText(DataBaseJSON.userFirebase.getDisplayName().substring(0,3));
+        }else{
+            registerForContextMenu(logBtn);
+        }
+    }
 }

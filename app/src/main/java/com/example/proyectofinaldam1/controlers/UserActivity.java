@@ -215,7 +215,7 @@ public class UserActivity extends AppCompatActivity {
     private String setTvRonda(int uid){
         String aux = "No se encuentra la app";
         for (int i = 0; i < torneos.size(); i++) {
-            if (torneos.get(i).getSets().contains("" + uid)){
+            if (torneos.get(i) != null &&  torneos.get(i).getSets() != null && torneos.get(i).getSets().contains("" + uid)){
                 aux = torneos.get(i).getName();
             }
         }
@@ -253,7 +253,7 @@ public class UserActivity extends AppCompatActivity {
                     }
                 }
             }
-            tvGames.setText("JP1 " + point1 + " - " + point2 + " JP2");
+            tvGames.setText("JP1 " + point2 + " - " + point1 + " JP2");
         }else{
             tvGames.setText("JP1 0 - 0 JP2");
         }
